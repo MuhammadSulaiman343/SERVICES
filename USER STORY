@@ -1,0 +1,49 @@
+As a business analyst,
+I want to enhance the procedures component,
+so that I can make it easier for users to differentiate between current and future procedures.
+
+ACCEPTANCE CRITERIA
+
+Scenario 1: Adding an Expected Date Field 
+GIVEN: The user has navigated to the Procedures component
+WHEN: The user adds a procedure
+THEN: There will be an "Expected Date" field 
+
+Business Rules:
+The field will be added to the component from both the Provider Notes and Clinical workflow 
+Next to the Expected Date field, there will be two options: Today and Future
+There will be radio buttons and "Today" will be selected by default
+When the user selects "Future", the following fields will be displayed:
+Date field with date control
+1 Week, 2 Weeks, 1 Month, 3 Months, and 6 Months buttons
+These fields will only be displayed when "Future" is selected and not when "Today" is selected
+The user will be able to select the date from the calendar or type in a date
+The user will only be able to enter dates of the future - the current and past dates will be disabled
+If the user presses one of the buttons, it will be displayed in selected form and the date will be auto-populated in the date field 
+The "Expected Date" field will be added on the test level and the user will be able to enter different dates for different tests in the same order
+
+Scenario 2: Population on SOAP
+GIVEN: Scenario 1 is successful
+WHEN: The user saves and accepts a procedure
+THEN: It will populate on the SOAP with the expected date
+
+Business Rules:
+The SOAP text for procedures will remain as it is with the addition of a "Expected Date" field
+The date will be displayed in the format: "(Expected Date: 19/07/2024)"
+The expected date will only populate on the SOAP when a future date has been selected 
+It will not be displayed if the date selected is of today (the current date)
+
+Scenario 3: Population on eSuperbill
+GIVEN: Scenario 1 is successful
+THEN: Only procedures ordered for today or past will be populated on the eSuperbill
+AND: Only signed procedures will be populated on the eSuperbill
+
+Business Rules:
+When the user creates a draft procedure order, adds it to the note, and creates the eSuperbill, the CPT codes will not be displayed on the eSuperbill
+When the user creates and signs a procedure order with the expected date set to the same day, the respective CPT code will be reflected on the eSuperbill
+When the user creates and signs a procedure order with the expected date set to a past date, the respective CPT code will be reflected on the eSuperbill
+When the user creates and signs a procedure order with a future expected date, the respective CPT code will not be reflected on the eSuperbill
+Note: The CPT code will only be displayed on the date of the procedure i.e., expected date
+The order can include both tests with an expected date of the same day and an expected date of the future (since expected dates are added at the test level). In this case, only a subset of the tests will be reflected on the eSuperbill
+When the user creates and marks the procedure as ‘Sign and complete’, the system will display the CPT code on the eSuperbill, regardless of the expected date
+In case the user has added multiple tests to an order with “Today” selected for some and a future expected date selected for the rest, there will be an error at the top stating “eSuperbill will not include the following tests:” and the tests with a future date selected will be listed there
